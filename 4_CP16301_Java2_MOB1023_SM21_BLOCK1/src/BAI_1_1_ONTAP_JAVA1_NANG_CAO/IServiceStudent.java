@@ -10,8 +10,12 @@ package BAI_1_1_ONTAP_JAVA1_NANG_CAO;
  * @author DungNAPC
  */
 public interface IServiceStudent {
+
     public boolean addStudent();
-     void getLstStudents();
-     void removeStudent();
-     void findStudent();
+
+    void getLstStudents();
+
+    void removeStudent();
+
+    void findStudent();
 }

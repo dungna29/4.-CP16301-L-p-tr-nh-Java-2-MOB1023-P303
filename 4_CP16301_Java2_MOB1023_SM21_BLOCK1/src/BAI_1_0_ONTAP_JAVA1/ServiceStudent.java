@@ -59,13 +59,13 @@ public class ServiceStudent {
 //                _lstStudent.remove(i);
 //            }
 //        }
-        
+
         //Cách 2: Sử dụng getIndex
         System.out.println("Mời bạn nhập mã xóa: ");
         _input = _sc.nextLine();
-         _lstStudent.remove(getIndexByStudentID(Integer.parseInt(_input)));
-        
-         //Cách 3: Rút gọn hơn nữa nhưng lồng 2 phương thức vào và vẫn xóa theo index
+        _lstStudent.remove(getIndexByStudentID(Integer.parseInt(_input)));
+
+        //Cách 3: Rút gọn hơn nữa nhưng lồng 2 phương thức vào và vẫn xóa theo index
         _lstStudent.remove(getIndexByStudentID(Integer.parseInt(getInputValue("mã cần xóa: "))));
     }
 
@@ -80,7 +80,7 @@ public class ServiceStudent {
 //        }
 //        System.out.println("Không tìm thấy");
 
-          //Cách 2: Sử dụng getIndex
+        //Cách 2: Sử dụng getIndex
         System.out.println("Mời bạn nhập mã tìm: ");
         _input = _sc.nextLine();
         int temp = getIndexByStudentID(Integer.parseInt(_input));
@@ -88,10 +88,44 @@ public class ServiceStudent {
             System.out.println("Mã bạn nhập không tồn tại");
             return;
         }
-         _lstStudent.get(temp).inRaManHinh();
-        
-         //Cách 3: Rút gọn hơn nữa nhưng lồng 2 phương thức vào và vẫn xóa theo index
+        _lstStudent.get(temp).inRaManHinh();
+
+        //Cách 3: Rút gọn hơn nữa nhưng lồng 2 phương thức vào và vẫn xóa theo index
         _lstStudent.get(getIndexByStudentID(Integer.parseInt(getInputValue("mã cần xóa: ")))).inRaManHinh();
+    }
+
+    public void updateStudent() {
+        System.out.println("Mời bạn nhập mã: ");
+        _input = _sc.nextLine();
+        for (int i = 0; i < _lstStudent.size(); i++) {
+            if (_lstStudent.get(i).getId() == Integer.parseInt(_input)) {
+                _lstStudent.get(i).inRaManHinh();
+                System.out.println("Các thuộc thông tin");
+                System.out.println("1. Tên");
+                System.out.println("2. Sdt");
+                System.out.println("3. Giới Tính");
+                System.out.println("Mời bạn chọn chức năng: ");
+                _input = _sc.nextLine();
+                switch (_input) {
+                    case "1":
+                        _lstStudent.get(i).setName(getInputValue("tên cần sửa: "));
+                        break;
+                    case "2":
+                        System.out.println("Mời bạn nhập sđt cần sửa: ");
+                        _lstStudent.get(i).setPhone(_sc.nextLine());
+                        break;
+                    case "3":
+                        System.out.println("Mời bạn nhập giới tính  cần sửa: ");
+                        _lstStudent.get(i).setSex(Integer.parseInt(_sc.nextLine()));
+                        break;
+                    default:
+                        System.out.println("Chức năng không tồn tại");
+                }
+                return;
+            }
+        }
+        System.out.println("Không tìm thấy");
+
     }
 
     //Đây là phương thức trả về và kết quả trả về là index của đối tượng nằm trong danh sách
