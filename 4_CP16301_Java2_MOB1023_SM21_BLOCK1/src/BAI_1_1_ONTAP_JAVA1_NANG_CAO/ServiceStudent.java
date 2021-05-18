@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author DungNAPC
  */
-public class ServiceStudent {
+public class ServiceStudent implements IServiceStudent{
 
     Scanner _sc = new Scanner(System.in);
     String _input;
