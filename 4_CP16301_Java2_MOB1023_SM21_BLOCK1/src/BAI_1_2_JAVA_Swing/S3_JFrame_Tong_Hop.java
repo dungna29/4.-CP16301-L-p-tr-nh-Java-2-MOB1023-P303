@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Buoi1_2_JAVA_Swing;
+package BAI_1_2_JAVA_Swing;
 
 import java.util.Vector;
 import javax.swing.ButtonGroup;
