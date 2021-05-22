@@ -48,27 +48,29 @@ public class ServiceStudent {
     }
 
     //Sửa sinh viên truyền 1 đối tượng
-    public String editStudent(Student student) {
+    public String editStudent(Student student) {        
         int temp = getIndexStudent(student.getMsv());
-        if (temp >= 0) {
-            return "Mã sinh viên đã tồn tại";
-        }
+        if (temp == -1) {
+            return "Bạn vui lòng không sửa mã hoặc mã không tồn tại";
+        }            
         _lstStudents.set(temp, student);
         return "Bạn sửa thành công";
     }
 
     public String removeStudent(String msv) {
-        if (getIndexStudent(msv) == -1) {
+        int temp = getIndexStudent(msv);
+        if (temp == -1) {
             return "Mã sinh viên không tồn tại";
         }
         if (msv.isBlank() && msv.isEmpty() && msv == null) {
-            return "Xóa không thành công";
+            return "Không được để Msv black và empty";
         }
+        _lstStudents.remove(temp);
         return "Xóa thành công";
     }
 
     public String addStudent(Student student) {
-        if (getIndexStudent(student.getMsv()) == -1) {
+        if (getIndexStudent(student.getMsv()) >= 0) {
             return "Mã sinh viên trùng";
         }
         if (student != null) {
@@ -82,7 +84,7 @@ public class ServiceStudent {
         return _lstStudents;
     }
 
-    private int getIndexStudent(String msv) {
+    public int getIndexStudent(String msv) {
         for (int i = 0; i < _lstStudents.size(); i++) {
             if (_lstStudents.get(i).getMsv().equals(msv)) {
                 return i;
@@ -95,7 +97,7 @@ public class ServiceStudent {
         int start = 1600,end = 2021;
         String[] arrYears = new String[2021-1600];
         for (int i = 0; i < 2021-1600; i++) {
-            arrYears[0] = String.valueOf(start);
+            arrYears[i] = String.valueOf(start);
             start++;
         }
         return arrYears;
