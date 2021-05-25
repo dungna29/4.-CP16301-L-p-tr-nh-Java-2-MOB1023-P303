@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BAI_1_3_BaiTapTongHop_CRUD;
+package BAI_1_4_BaiTapTongHop_CRUD_NangCao;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -21,17 +23,23 @@ public class Main extends javax.swing.JFrame {
     Student _Student;
     DefaultTableModel _DefaultTableModel;
     DefaultComboBoxModel _DefaultComboBoxModel;
-
+    List<Student> _lstStudent;
     public Main() {
         initComponents();
         _ServiceStudent.get10Student();
-        loadTableStudent();
+        
         //Group Radiobtn
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(rdb_Nu);
         buttonGroup.add(rdb_Nam);
         loadCbcNamSinh();
         rdb_Nam.setSelected(true);
+        _lstStudent = _ServiceStudent.getLstStudent();//Đổ dữ liệu từ bên Service
+        for (Student x : _lstStudent) {
+            System.out.println(x.getMsv());
+        }
+        loadTableStudent();
+        loadTableStudentSQL();
     }
 
     void loadCbcNamSinh() {
@@ -40,16 +48,26 @@ public class Main extends javax.swing.JFrame {
         cbc_NamSinh.setSelectedIndex(_ServiceStudent.getNamSinhCombobox().length - 1);
 
     }
-
-    void loadTableStudent() {
-        if (_ServiceStudent.getLstStudent().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Không DsSV để load lên bảng");
-            return;
+    void loadTableStudentSQL(){
+         _DefaultTableModel = (DefaultTableModel) tbl_Save.getModel();
+        _DefaultTableModel.setRowCount(0);
+        int stt = 1;
+        System.out.println(_ServiceStudent.getLstStudent().size());
+        for (Student x : _ServiceStudent.getLstStudent()) {
+            _DefaultTableModel.addRow(new Object[]{stt++, x.getMsv(),
+                 x.getTen(), x.getSdt(), x.getGioiTinh() == 1 ? "Nam" : "Nữ",
+                 x.getNamSinh(), 2021 - x.getNamSinh()});
         }
+    }
+    void loadTableStudent() {
+//        if (_lstStudent.isEmpty()) {
+//            JOptionPane.showMessageDialog(this, "Không DsSV để load lên bảng");
+//            return;
+//        }
         _DefaultTableModel = (DefaultTableModel) tbl_Student.getModel();
         _DefaultTableModel.setRowCount(0);
         int stt = 1;
-        for (Student x : _ServiceStudent.getLstStudent()) {
+        for (Student x : _lstStudent) {
             _DefaultTableModel.addRow(new Object[]{stt++, x.getMsv(),
                  x.getTen(), x.getSdt(), x.getGioiTinh() == 1 ? "Nam" : "Nữ",
                  x.getNamSinh(), 2021 - x.getNamSinh()});
@@ -83,11 +101,11 @@ public class Main extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         btn_Clear = new javax.swing.JButton();
         btn_Clear1 = new javax.swing.JButton();
-        btn_Clear2 = new javax.swing.JButton();
+        btn_Save = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tbl_Sae = new javax.swing.JTable();
+        tbl_Save = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -179,11 +197,11 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        btn_Clear2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btn_Clear2.setText("Save");
-        btn_Clear2.addActionListener(new java.awt.event.ActionListener() {
+        btn_Save.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btn_Save.setText("Save");
+        btn_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_Clear2ActionPerformed(evt);
+                btn_SaveActionPerformed(evt);
             }
         });
 
@@ -192,7 +210,7 @@ public class Main extends javax.swing.JFrame {
         jTextArea1.setText("Khi thực hiện thêm và sửa và xóa thì sẽ không\ntác động vào List ở bên Service và hiển thị 1 cái label thông báo bạn nhớ save dữ liệu nhé (Nút Save sẽ\nhiển thị khi dữ liệu bị thay đổi). Chỉ khi nào các bạn thực hiện hành động bấm save thì sẽ lưu toàn bộ\ncác sự thay đổi vào List bên Service.");
         jScrollPane2.setViewportView(jTextArea1);
 
-        tbl_Sae.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_Save.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -203,12 +221,12 @@ public class Main extends javax.swing.JFrame {
                 "STT", "Mã Sinh Viên", "Tên", "Số điện thoại", "Giới Tính", "Năm Sinh", "Tuổi"
             }
         ));
-        tbl_Sae.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_Save.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_SaeMouseClicked(evt);
+                tbl_SaveMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(tbl_Sae);
+        jScrollPane3.setViewportView(tbl_Save);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel6.setText("List bên Service");
@@ -249,7 +267,7 @@ public class Main extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btn_Xoa, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btn_Clear2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(btn_Save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(btn_Them)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -286,7 +304,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(txt_sdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(btn_Xoa)
-                    .addComponent(btn_Clear2))
+                    .addComponent(btn_Save))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -316,7 +334,7 @@ public class Main extends javax.swing.JFrame {
 
     private void tbl_StudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_StudentMouseClicked
         int index = tbl_Student.getSelectedRow();
-        Student st = _ServiceStudent.getLstStudent().get(index);
+        Student st = _lstStudent.get(index);
         txt_msv.setText(st.getMsv());
         txt_Ten.setText(st.getTen());
         txt_sdt.setText(st.getSdt());
@@ -358,21 +376,25 @@ public class Main extends javax.swing.JFrame {
 //                txt_Ten.getText(), txt_sdt.getText(), rdb_Nam.isSelected()?1:0
 //                , Integer.parseInt(cbc_NamSinh.getSelectedItem().toString()));//Cách 1
         //JOptionPane.showMessageDialog(this, _ServiceStudent.addStudent(student));  //Cách 1    
-        JOptionPane.showMessageDialog(this, _ServiceStudent.addStudent(new Student(txt_msv.getText(),
+        JOptionPane.showMessageDialog(this, _lstStudent.add(new Student(txt_msv.getText(),
                 txt_Ten.getText(), txt_sdt.getText(), rdb_Nam.isSelected()?1:0
                 , Integer.parseInt(cbc_NamSinh.getSelectedItem().toString()))));      
         loadTableStudent();
     }//GEN-LAST:event_btn_ThemActionPerformed
 
     private void btn_XoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_XoaActionPerformed
-        JOptionPane.showMessageDialog(this, _ServiceStudent.removeStudent(txt_msv.getText()));  
+        JOptionPane.showMessageDialog(this,_lstStudent.remove(_ServiceStudent.getIndexStudent(txt_msv.getText())));  
         loadTableStudent();
     }//GEN-LAST:event_btn_XoaActionPerformed
 
     private void btn_SuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SuaActionPerformed
-       JOptionPane.showMessageDialog(this, _ServiceStudent.editStudent(new Student(txt_msv.getText(),
+       int temp = _ServiceStudent.getIndexStudentByList(txt_msv.getText(),_lstStudent);
+        System.out.println("index = " + temp);
+       _Student = new Student(txt_msv.getText(),
                 txt_Ten.getText(), txt_sdt.getText(), rdb_Nam.isSelected()?1:0
-                , Integer.parseInt(cbc_NamSinh.getSelectedItem().toString()))));  
+                , Integer.parseInt(cbc_NamSinh.getSelectedItem().toString()));
+       _lstStudent.set(temp, _Student);
+        JOptionPane.showMessageDialog(this, "Sửa thành công");  
         loadTableStudent();
     }//GEN-LAST:event_btn_SuaActionPerformed
 
@@ -380,13 +402,15 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_Clear1ActionPerformed
 
-    private void btn_Clear2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Clear2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_Clear2ActionPerformed
+    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+        System.out.println("save" +  _lstStudent.size());
+        _ServiceStudent.addStudentSql(_lstStudent);
+        loadTableStudentSQL();
+    }//GEN-LAST:event_btn_SaveActionPerformed
 
-    private void tbl_SaeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_SaeMouseClicked
+    private void tbl_SaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_SaveMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tbl_SaeMouseClicked
+    }//GEN-LAST:event_tbl_SaveMouseClicked
 
     /**
      * @param args the command line arguments
@@ -414,7 +438,6 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -427,7 +450,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Clear;
     private javax.swing.JButton btn_Clear1;
-    private javax.swing.JButton btn_Clear2;
+    private javax.swing.JButton btn_Save;
     private javax.swing.JButton btn_Sua;
     private javax.swing.JButton btn_Them;
     private javax.swing.JButton btn_Xoa;
@@ -444,7 +467,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JRadioButton rdb_Nam;
     private javax.swing.JRadioButton rdb_Nu;
-    private javax.swing.JTable tbl_Sae;
+    private javax.swing.JTable tbl_Save;
     private javax.swing.JTable tbl_Student;
     private javax.swing.JTextField txt_Ten;
     private javax.swing.JTextField txt_msv;
