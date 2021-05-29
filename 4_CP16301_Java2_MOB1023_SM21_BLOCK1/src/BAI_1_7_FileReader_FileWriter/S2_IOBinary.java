@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Buoi_1_7_FileReader_FileWriter;
+package BAI_1_7_FileReader_FileWriter;
 
 import java.io.File;
 import java.io.FileInputStream;
