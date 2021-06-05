@@ -5,6 +5,9 @@
  */
 package BAI_1_9_Thread;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author DungnaPC
@@ -16,6 +19,36 @@ public class DemoChuChay extends javax.swing.JFrame {
    */
   public DemoChuChay() {
     initComponents();
+    ChayChuCach1();
+  }
+
+  void ChayChuCach1() {
+    Thread t1 = new Thread() {
+      @Override
+      public void run() {
+        int index = 0;
+        String text = lblText1.getText();//UDPM
+        while (true) {
+          if (index == text.length()) {
+            index = 0;
+          }
+          //Sau mỗi lần chạy cần reset lại index về 0
+          String c1 = text.substring(index, index + 1);//c1 =U
+          System.out.println("chu cai dau + " + c1);
+          String c2 = text.substring(index, text.length());//c2 = DPM
+           System.out.println("chu cai dau + " + c2);
+          text += c1;//DPMU          
+          try {
+            sleep(1000);
+          } catch (InterruptedException ex) {
+            Logger.getLogger(DemoChuChay.class.getName()).log(Level.SEVERE, null, ex);
+          }
+          lblText1.setText(c2);
+          index++;
+        }
+      }
+    };
+    t1.start();
   }
 
   /**
@@ -27,26 +60,53 @@ public class DemoChuChay extends javax.swing.JFrame {
   private void initComponents() {
 
     jLabel1 = new javax.swing.JLabel();
+    jLabel2 = new javax.swing.JLabel();
+    lblText1 = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+    jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+    jLabel1.setForeground(new java.awt.Color(51, 51, 255));
     jLabel1.setText("FPTPOLYTECHNIC");
+
+    jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+    jLabel2.setText("Sử dụng Thread để tạo chữ chạy bằng cách đưa chữ cái cuối cùng lên đầu");
+
+    lblText1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+    lblText1.setForeground(new java.awt.Color(51, 51, 255));
+    lblText1.setText("UDPM");
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addGap(110, 110, 110)
+        .addGap(39, 39, 39)
+        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
+        .addContainerGap())
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addComponent(jLabel1)
-        .addContainerGap(203, Short.MAX_VALUE))
+        .addGap(37, 37, 37))
+      .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+          .addGap(162, 162, 162)
+          .addComponent(lblText1)
+          .addContainerGap(595, Short.MAX_VALUE)))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-        .addContainerGap(146, Short.MAX_VALUE)
+      .addGroup(layout.createSequentialGroup()
+        .addGap(116, 116, 116)
         .addComponent(jLabel1)
-        .addGap(140, 140, 140))
+        .addGap(44, 44, 44)
+        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(24, Short.MAX_VALUE))
+      .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+          .addGap(120, 120, 120)
+          .addComponent(lblText1)
+          .addContainerGap(166, Short.MAX_VALUE)))
     );
 
     pack();
@@ -66,16 +126,24 @@ public class DemoChuChay extends javax.swing.JFrame {
         if ("Nimbus".equals(info.getName())) {
           javax.swing.UIManager.setLookAndFeel(info.getClassName());
           break;
+
         }
       }
     } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(DemoChuChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(DemoChuChay.class
+              .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
     } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(DemoChuChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(DemoChuChay.class
+              .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
     } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(DemoChuChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(DemoChuChay.class
+              .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(DemoChuChay.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(DemoChuChay.class
+              .getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
     //</editor-fold>
 
@@ -89,5 +157,7 @@ public class DemoChuChay extends javax.swing.JFrame {
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel jLabel1;
+  private javax.swing.JLabel jLabel2;
+  private javax.swing.JLabel lblText1;
   // End of variables declaration//GEN-END:variables
 }
