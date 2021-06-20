@@ -23,7 +23,8 @@ public class S3_Boxing_unBoxing {
     int a = objInt.intValue();//Unboxing
     int b = Integer.valueOf(objInt);//Unboxing
     
-    List<Double> lst = new ArrayList<Double>();
+    List<Double> lst = new ArrayList<>();
+    List<String> lst2 = new ArrayList<>();
     //List<double> lst1 = new ArrayList<double>(); Không làm việc đc với kiểu dữ liệu nguyên thủy
     Double d1 = 21.2;
     System.out.println(d1.toString() + 10);
